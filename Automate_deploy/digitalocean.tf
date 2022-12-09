@@ -13,7 +13,7 @@ resource "digitalocean_ssh_key" "default" {
 }
 
 variable "do_token" {
-  default =  "dop_v1_e125177c5854d4e4eb3909188542e9f6df1a0720f7b3c81541925f6fbfd688b5"
+  default =  "putokenhere"
 }
 
 variable "ssh_key_private" {
