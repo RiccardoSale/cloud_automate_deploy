@@ -1,0 +1,7 @@
+10 1 * * SUN /backup.sh
+
+#!/bin/bash
+DATE = $(date +%Y-%m-%d-%H%M%S)
+TARGET = "/home/user"
+tar -cvzpf backup-$DATE.tar.gz $TARGET
+scp  backup-$DATE.tar.gz user@192.168.1.100

@@ -1,0 +1,15 @@
+- hosts: all
+  gather_facts: False
+  
+  #Install python with yum
+  tasks:
+  - name: install python
+    raw: test -e /usr/bin/python || (yum update && yum install -y python)
+
+- hosts: all
+
+  roles:
+    - server
+    - php
+    - mysql
+    - wordpress
