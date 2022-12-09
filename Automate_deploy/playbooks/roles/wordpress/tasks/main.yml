@@ -1,7 +1,7 @@
 ---
 - name: Download WordPress
   get_url: 
-    url=https://wordpress.org/latest.tar.gz 
+    url=https://wordpress.org/wordpress-{{wp_version}}.tar.gz
     dest=/tmp/wordpress.tar.gz
     validate_certs=no
 
@@ -15,7 +15,7 @@
     path: "/etc/httpd/conf/httpd.conf"
     replace: "DocumentRoot \"/var/www/wordpress\""
     regexp: "DocumentRoot \"/var/www/html\""
-
+  #improving base configuration
 - name: Update default document root
   become: yes
   replace: 
@@ -36,6 +36,7 @@
     replace : "{{ item.line }}"
     regexp: "{{ item.regexp }}"
 
+  #define user for the databases
   with_items:
     - {'regexp': "define\\( 'DB_NAME', '*.*' \\);", 'line': "define('DB_NAME', '{{wp_mysql_db}}');"}        
     - {'regexp': "define\\( 'DB_USER', '*.*' \\);", 'line': "define('DB_USER', '{{wp_mysql_user}}');"}        

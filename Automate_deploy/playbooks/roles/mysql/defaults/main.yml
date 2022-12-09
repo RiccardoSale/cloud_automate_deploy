@@ -2,4 +2,5 @@
 # default credential file for
 wp_mysql_db: wordpress
 wp_mysql_user: wordpress
-wp_mysql_password: randompassword
+wp_mysql_password: password
+wp_mysql_root_password: password

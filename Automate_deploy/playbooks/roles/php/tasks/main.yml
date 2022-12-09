@@ -10,3 +10,8 @@
     - php-xml
     - php-mbstring
     - php-mcrypt
+    - php-curl
+    - php-xmlrpc
+    - php-soap
+    - php-intl
+    - php-zip

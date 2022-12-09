@@ -39,3 +39,25 @@
     - php80-php-fpm
     - php80-php-mysqlnd
     - MySQL-python
+
+- name: Install firewall firewalld
+  yum:
+    name: firewalld
+    state: present
+
+- name: Enable firewall
+  command: systemctl start firewalld
+
+- name: Enable shh (fw)
+  command: firewall-cmd --permanent --add-service=ssh
+
+- name: Enable smtp (fw)
+  command: firewall-cmd --permanent --add-service=smtp #enable smtp also we can enable other multiple services when needed (example)
+
+- name: Enable https (fw)
+  command: firewall-cmd --permanent --add-service=https
+
+- name: Reload firewall with new attribute
+  command: firewall-cmd --reload
+
+#we can also enable vpn / vpc and do a service auditing / and tls encryption or ssl

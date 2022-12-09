@@ -5,13 +5,14 @@
 - name: Remove Test database if it exist.
   mysql_db: name=test state=absent
 
+  #remove all anynomous user for improving security and clean unusable data
 - name: Remove All Anonymous User Accounts
   mysql_user: name=” host_all=yes state=absent
 
 - name: Create mysql database
   mysql_db: name={{ wp_mysql_db }} state=present
   become: yes
-
+  #create user with the name and password provided in the config file
 - name: Create mysql user
   mysql_user: 
     name={{ wp_mysql_user }} 

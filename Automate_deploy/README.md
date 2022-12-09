@@ -13,8 +13,8 @@ You must have terraform and ansible installed.
 You need to have an account with digital ocean, and create a personal private token and ssh keys.
 
 Tested on:
-Terraform v
-+ provider.digitalocean v
+Terraform v1.3.6
++ provider.digitalocean 2.14.1
 
 ### Digital Ocean Token
 

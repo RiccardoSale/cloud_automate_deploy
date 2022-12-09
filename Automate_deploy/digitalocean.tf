@@ -13,8 +13,8 @@ resource "digitalocean_ssh_key" "default" {
 }
 
 variable "do_token" {
-  default =  "dop_v1_e0cb939d6de74e898abc8e2fb6ccc2f4b0779e839560abab29c0e6fea55c8c23"
-  }
+  default =  "dop_v1_e125177c5854d4e4eb3909188542e9f6df1a0720f7b3c81541925f6fbfd688b5"
+}
 
 variable "ssh_key_private" {
   default = "id_rsa"
@@ -30,17 +30,20 @@ provider "digitalocean" {
 
 }
 
-# Create a web server in digitalOcean
+# Create a droplet in digitalOcean
+# we can later change the size / ram / cpu of the droplet if we see with monitoring alert that the resorces are too low!
 resource "digitalocean_droplet" "claranet" {
-    image  = "centos-7-x64"
+    image  = "centos-7-x64"  #choose centos OS instead of ubuntu because its more stable for server enviroment
     name   = "claranet"
     region = "fra1"
     size   = "s-1vcpu-1gb"
     monitoring = "true"
+    backups = "true"  #enable automatic backup of the droplet / we can also later enable backup linux with Rsync
     ssh_keys = [digitalocean_ssh_key.default.fingerprint]
+
     # Install python on the droplet using remote-exec to execute ansible playbooks to configure the services
     provisioner "remote-exec" {
-        inline = [ #yum do not require refreshing packages
+        inline = [ #yum do not require refreshing packages or we can also use aptitude
           "yum install python -y",
         ]
 
@@ -63,4 +66,22 @@ resource "digitalocean_droplet" "claranet" {
         working_dir = "playbooks/"
         command     = "ansible-playbook -u root --private-key ${var.ssh_key_private} -i ${self.ipv4_address}, wordpress_playbook.yml"
     }
+}
+
+#we can configure some allert using the monitor allert for improve fault-tolerance
+resource "digitalocean_monitor_alert" "cpu_alert" {
+    alerts {
+      email = ["riccardosale2001@gmail.com"]
+      slack {
+        channel   = "Production Alerts"
+        url       = "testurl"
+      }
+    }
+    window      = "5m"
+    type        = "v1/insights/droplet/cpu"
+    compare     = "GreaterThan"
+    value       = 90
+    enabled     = true
+    entities    = [digitalocean_droplet.claranet.id]
+    description = "Alert about CPU usage"
 }
