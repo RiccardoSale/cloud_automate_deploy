@@ -77,3 +77,5 @@ $ terraform plan
 $ terraform apply
 ```
 We then can access to wordpress site in the address display/ip by ansible.
+### Architecture
+![A](https://github.com/RiccardoSale/cloud_automate_deploy/blob/716986644d06a17f8e8f6188044d17ea94420b62/Automate_deploy/architecture%20diagram.png)
